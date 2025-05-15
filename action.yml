@@ -37,7 +37,7 @@ runs:
   using: "composite"
   steps:
     - name: Downalod UiPath CLI
-      id: download-automation-ops-rule
+      id: download-automation-ops-rules
       shell: pwsh
       run: |
         $auth_headers = @{ "Content-Type" = "application/x-www-form-urlencoded" }
@@ -63,7 +63,7 @@ runs:
         }
 
         $identifier = $filtered_policies[0].identifier
-        $output_location = "{{ $inputs.OutputFileFolder }}\RulesConfig.json" >> $GITHUB_OUTPUT
+        $output_location = "{{ $inputs.OutputFileFolder }}/RulesConfig.json" >> $GITHUB_OUTPUT
 
-        Invoke-RestMethod "https://cloud.uipath.com/${{ inputs.OrchestratorName }}/roboticsops_/api/Policy/$identifier/download" -Method 'GET' -Headers $policy_headers -OutFile "$output_location"
+        Invoke-RestMethod "https://cloud.uipath.com/${{ inputs.OrchestratorName }}/roboticsops_/api/Policy/$identifier/download" -Method 'GET' -Headers $policy_headers -OutFile "{{ $inputs.OutputFileFolder }}/RulesConfig.json"
 
