@@ -67,5 +67,5 @@ runs:
 
         Invoke-RestMethod "https://cloud.uipath.com/${{ inputs.OrchestratorName }}/roboticsops_/api/Policy/$identifier/download" -Method 'GET' -Headers $policy_headers -OutFile "$output_location"
 
-        $output_location >> >> $GITHUB_OUTPUT
+        $output_location >> $GITHUB_OUTPUT
 
