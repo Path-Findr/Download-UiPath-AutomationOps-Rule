@@ -20,6 +20,6 @@ jobs:
                 OutputFileFolder: ${{ github.workspace }}
             
             - name: 'Print Rule Location'
-              run: echo "Test ${{ steps.download-automation-ops-rule.outputs.OutputFilePath }}"
+              run: echo ${{ steps.download-automation-ops-rule.outputs.OutputFilePath }}
             
 
