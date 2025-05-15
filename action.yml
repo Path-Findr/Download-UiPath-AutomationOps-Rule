@@ -1,0 +1,69 @@
+name: Download UiPath Automation Ops Rule
+description: 'Step that downloads an UiPath Automation Ops rule to then be used when analyzing UiPath Project'
+
+branding:
+  icon: chevrons-right
+  color: orange
+  
+inputs:
+  AutomationOpsRuleName:
+    required: true
+    description: The name of the rule inside Automation Ops
+  OrchestratorName:
+    required: true
+    description: The name of your company's Orchestrator Instance
+  ClientID:
+    required: true
+    description: The client_id of your external application setup in UiPath
+  ClientSecret:
+    required: true
+    description: The client_secret of your external application setup in UiPath
+  Scope:
+    required: false
+    description: The scopes that your external application uses
+    default: OR.Administrator
+  OutputFileFolder:
+    required: false
+    description: The folder location where you want your Rule to be downloaded to
+    default: ${{ github.workspace }}
+
+outputs:
+  OutputFilePath:
+    description: The path to the Rule that was downloaded
+    value: ${{ steps.download-automation-ops-rule.output_location }}
+
+
+runs:
+  using: "composite"
+  steps:
+    - name: Downalod UiPath CLI
+      id: download-automation-ops-rule
+      shell: pwsh
+      run: |
+        $auth_headers = @{ "Content-Type" = "application/x-www-form-urlencoded" }
+        $auth_body = "grant_type=client_credentials&client_id=${{ inputs.ClientID }}&client_secret=${{ inputs.ClientSecret }}&scope=${{ inputs.Scope }}"
+ 
+
+        $auth_response = Invoke-RestMethod 'https://cloud.uipath.com/${{ inputs.OrchestratorName }}/identity_/connect/token' -Method 'POST' -Headers $auth_headers -Body $auth_body
+        $auth_response | ConvertTo-Json
+
+
+        $policy_headers = @{ "authorization" = "Bearer " + $auth_response.access_token }
+
+
+        $policies_response = Invoke-RestMethod 'https://cloud.uipath.com/${{ inputs.OrchestratorName }}/roboticsops_/api/Policy' -Method 'GET' -Headers $policy_headers
+        $policies_response | ConvertTo-Json
+
+
+        $filtered_policies = $policies_response | Where-Object {$_.name -eq "${{ inputs.AutomationOpsRuleName }}"}
+
+
+        if($filtered_policies.Count -eq 0){
+            throw "No Policies with name found"
+        }
+
+        $identifier = $filtered_policies[0].identifier
+        $output_location = "{{ $inputs.OutputFileFolder }}\RulesConfig.json" >> $GITHUB_OUTPUT
+
+        Invoke-RestMethod "https://cloud.uipath.com/${{ inputs.OrchestratorName }}/roboticsops_/api/Policy/$identifier/download" -Method 'GET' -Headers $policy_headers -OutFile "$output_location"
+
