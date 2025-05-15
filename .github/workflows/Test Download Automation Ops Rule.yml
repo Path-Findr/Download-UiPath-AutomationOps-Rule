@@ -1,0 +1,25 @@
+name: Test Download UiPath Automation Ops Rule
+
+on: [push]
+
+jobs:
+    clone:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v4
+
+            - name: 'Download UiPath Automation Ops Rule'
+              id: download-automation-ops-rule
+              uses: ./
+              with:
+                AutomationOpsRuleName: 'Developer'
+                OrchestratorName: 'pathfindr'
+                ClientID: ${{ secrets.UIPATHEXTERNALAPPCLIENT }}
+                ClientSecret: ${{ secrets.UIPATHEXTERNALAPPSECRET }}
+                Scope: OR.Administrator
+                OutputFileFolder: ${{ github.workspace }}
+            
+            - name: 'Print Rule Location'
+              run: echo ${{steps.download-automation-ops-rule.outputs.OutputFilePath}}
+            
+
