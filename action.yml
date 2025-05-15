@@ -61,9 +61,13 @@ runs:
         }
 
         $identifier = $filtered_policies[0].identifier
-        $output_location = "${{ inputs.OutputFileFolder }}/RulesConfig.json"
 
-        Invoke-RestMethod "https://cloud.uipath.com/${{ inputs.OrchestratorName }}/roboticsops_/api/Policy/$identifier/download" -Method 'GET' -Headers $policy_headers -OutFile "$output_location"
+        Invoke-RestMethod "https://cloud.uipath.com/${{ inputs.OrchestratorName }}/roboticsops_/api/Policy/$identifier/download" -Method 'GET' -Headers $policy_headers -OutFile "${{ inputs.OutputFileFolder }}/RulesConfig.json"
+    - name: Output Path
+      shell: bash
+      run: |
+      $output_location="${{ inputs.OutputFileFolder }}/RulesConfig.json"
+      "OutputFilePath=$output_location" >> $GITHUB_OUTPUT
         
-        "OutputFilePath=$output_location" | Out-File -FilePath $env:GITHUB_OUTPUT -Encoding utf8 -Append
+        
 
