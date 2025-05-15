@@ -1,3 +1,4 @@
+
 name: Download UiPath Automation Ops Rule
 description: 'Step that downloads an UiPath Automation Ops rule to then be used when analyzing UiPath Project'
 
@@ -21,7 +22,7 @@ inputs:
   Scope:
     required: false
     description: The scopes that your external application uses
-    default: OR.Administrator
+    default: OR.Administration
   OutputFileFolder:
     required: false
     description: The folder location where you want your Rule to be downloaded to
@@ -30,15 +31,15 @@ inputs:
 outputs:
   OutputFilePath:
     description: The path to the Rule that was downloaded
-    value: ${{ steps.download-automation-ops-rule.output_location }}
+    value : ${{ steps.download-rule.outputs.OutputFilePath }}
 
 
 runs:
   using: "composite"
   steps:
-    - name: Downalod UiPath CLI
-      id: download-automation-ops-rules
+    - name: Downalod UiPath Automation Ops Rule
       shell: pwsh
+      id: download-rule
       run: |
         $auth_headers = @{ "Content-Type" = "application/x-www-form-urlencoded" }
         $auth_body = "grant_type=client_credentials&client_id=${{ inputs.ClientID }}&client_secret=${{ inputs.ClientSecret }}&scope=${{ inputs.Scope }}"
@@ -63,7 +64,10 @@ runs:
         }
 
         $identifier = $filtered_policies[0].identifier
-        $output_location = "{{ $inputs.OutputFileFolder }}/RulesConfig.json" >> $GITHUB_OUTPUT
+        $output_location = "${{ inputs.OutputFileFolder }}/AutomationOpsRule.json"
 
-        Invoke-RestMethod "https://cloud.uipath.com/${{ inputs.OrchestratorName }}/roboticsops_/api/Policy/$identifier/download" -Method 'GET' -Headers $policy_headers -OutFile "{{ $inputs.OutputFileFolder }}/RulesConfig.json"
+        Invoke-RestMethod "https://cloud.uipath.com/${{ inputs.OrchestratorName }}/roboticsops_/api/Policy/$identifier/download" -Method 'GET' -Headers $policy_headers -OutFile "$output_location"
+        "OutputFilePath=$output_location" >> $env:GITHUB_OUTPUT
+        
+
 
