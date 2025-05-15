@@ -36,7 +36,6 @@ runs:
   using: "composite"
   steps:
     - name: Downalod UiPath CLI
-      id: download-automation-ops-rule
       shell: pwsh
       run: |
         $auth_headers = @{ "Content-Type" = "application/x-www-form-urlencoded" }
