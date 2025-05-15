@@ -30,7 +30,6 @@ inputs:
 outputs:
   OutputFilePath:
     description: The path to the Rule that was downloaded
-    value: ${{ steps.download-automation-ops-rule.output_location }}
 
 
 runs:
@@ -63,7 +62,9 @@ runs:
         }
 
         $identifier = $filtered_policies[0].identifier
+        $output_location = "${{ inputs.OutputFileFolder }}/RulesConfig.json"
 
-        Invoke-RestMethod "https://cloud.uipath.com/${{ inputs.OrchestratorName }}/roboticsops_/api/Policy/$identifier/download" -Method 'GET' -Headers $policy_headers -OutFile "${{ inputs.OutputFileFolder }}/RulesConfig.json"
-        $output_location = "${{ inputs.OutputFileFolder }}/RulesConfig.json" >> $GITHUB_OUTPUT
+        Invoke-RestMethod "https://cloud.uipath.com/${{ inputs.OrchestratorName }}/roboticsops_/api/Policy/$identifier/download" -Method 'GET' -Headers $policy_headers -OutFile "$output_location"
+        
+        "OutputFileFolder=$output_location" >> $env:GITHUB_OUTPUT
 
