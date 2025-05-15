@@ -1,4 +1,4 @@
-name: Download UiPath Automation Ops Rule
+ho name: Download UiPath Automation Ops Rule
 description: 'Step that downloads an UiPath Automation Ops rule to then be used when analyzing UiPath Project'
 
 branding:
@@ -67,7 +67,7 @@ runs:
       shell: bash
       run: |
         $output_location="${{ inputs.OutputFileFolder }}/RulesConfig.json"
-        "OutputFilePath=$output_location" >> $GITHUB_OUTPUT
+        echo "OutputFilePath=$output_location" >> $GITHUB_OUTPUT
         
         
 
