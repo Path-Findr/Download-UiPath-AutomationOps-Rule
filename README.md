@@ -62,7 +62,7 @@ jobs:
 | Name                    | Required | Description                                                          |
 | ----------------------- | -------- | -------------------------------------------------------------------- |
 | `AutomationOpsRuleName` | ✅        | The name of the Automation Ops rule you want to download             |
-| `OrchestratorName`      | ✅        | Your Orchestrator tenant name (e.g., `companyNameDefault`)           |
+| `OrchestratorName`      | ✅        | Your Orchestrator name (Eg: Mine is pathfindr as my orchestrator url is 'https://cloud.uipath.com/pathfindr')           |
 | `ClientID`              | ✅        | `client_id` from your UiPath external application                    |
 | `ClientSecret`          | ✅        | `client_secret` from your UiPath external application                |
 | `Scope`                 | ❌        | OAuth scopes (default: `OR.Administrator`)                           |
