@@ -66,8 +66,8 @@ runs:
     - name: Output Path
       shell: bash
       run: |
-      $output_location="${{ inputs.OutputFileFolder }}/RulesConfig.json"
-      "OutputFilePath=$output_location" >> $GITHUB_OUTPUT
+        $output_location="${{ inputs.OutputFileFolder }}/RulesConfig.json"
+        "OutputFilePath=$output_location" >> $GITHUB_OUTPUT
         
         
 
