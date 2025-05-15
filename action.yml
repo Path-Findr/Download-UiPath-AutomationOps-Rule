@@ -39,7 +39,7 @@ runs:
   steps:
     - name: Downalod UiPath Automation Ops Rule
       shell: pwsh
-      id: download-rule
+      id: download-rules
       run: |
         $auth_headers = @{ "Content-Type" = "application/x-www-form-urlencoded" }
         $auth_body = "grant_type=client_credentials&client_id=${{ inputs.ClientID }}&client_secret=${{ inputs.ClientSecret }}&scope=${{ inputs.Scope }}"
