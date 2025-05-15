@@ -16,8 +16,7 @@ jobs:
                 OrchestratorName: 'pathfindr'
                 ClientID: ${{ secrets.UIPATHEXTERNALAPPCLIENT }}
                 ClientSecret: ${{ secrets.UIPATHEXTERNALAPPSECRET }}
-
-                Scope: OR.Administration
+                Scope: OR.Administration OR.Analytics
                 OutputFileFolder: ${{ github.workspace }}
             
             - name: 'Print Rule Location'
