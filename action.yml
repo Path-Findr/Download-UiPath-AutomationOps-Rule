@@ -63,9 +63,9 @@ runs:
         }
 
         $identifier = $filtered_policies[0].identifier
-        $output_location = "{{ $inputs.OutputFileFolder }}\RulesConfig.json" >> $GITHUB_OUTPUT
-
-        Write-Output $output_location
+        $output_location = "{{ $inputs.OutputFileFolder }}\RulesConfig.json"
 
         Invoke-RestMethod "https://cloud.uipath.com/${{ inputs.OrchestratorName }}/roboticsops_/api/Policy/$identifier/download" -Method 'GET' -Headers $policy_headers -OutFile "$output_location"
+
+        $output_location >> >> $GITHUB_OUTPUT
 
