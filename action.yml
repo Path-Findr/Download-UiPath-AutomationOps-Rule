@@ -21,7 +21,7 @@ inputs:
   Scope:
     required: false
     description: The scopes that your external application uses
-    default: OR.Administrator
+    default: OR.Administration
   OutputFileFolder:
     required: false
     description: The folder location where you want your Rule to be downloaded to
