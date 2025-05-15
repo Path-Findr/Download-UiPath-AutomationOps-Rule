@@ -67,3 +67,5 @@ runs:
         
         Add-Content -Path $env:GITHUB_OUTPUT -Value "OutputFilePath=$output_location"
 
+        Write-Host "GITHUB_OUTPUT env var: $env:GITHUB_OUTPUT"
+
